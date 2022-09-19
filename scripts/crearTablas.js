@@ -17,13 +17,13 @@ const mariaDbClient = knex(config.mariaDb)
         
         
         //Inserto elementos
-        const articulos = [
+        const articulo = [
             {title: 'Mirinda'  ,price: 180, thumbnail:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnL-AibR8iEbML_MifNkcnQ0-fljiaSm3vQ-GqKdDrS6NM4VYf1wgIVpZ7E0fequdDQEjZ3SWtiA&usqp=CAc' },
             {title: 'Seven Up', price: 190, thumbnail: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnL-AibR8iEbML_MifNkcnQ0-fljiaSm3vQ-GqKdDrS6NM4VYf1wgIVpZ7E0fequdDQEjZ3SWtiA&usqp=CAc'},
             {title: 'Pepsi', price: 185, thumbnail: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnL-AibR8iEbML_MifNkcnQ0-fljiaSm3vQ-GqKdDrS6NM4VYf1wgIVpZ7E0fequdDQEjZ3SWtiA&usqp=CAc'}
         ];
         
-         await mariaDbClient('articulos').insert(articulos);
+         await mariaDbClient('articulos').insert(articulo);
     console.log('tabla productos en mariaDb creada con éxito')
 } catch (error) {
     console.log('error al crear tabla productos en mariaDb')
@@ -34,28 +34,28 @@ const mariaDbClient = knex(config.mariaDb)
 
 //------------------------------------------
 // mensajes en SQLite3
-// const sqliteClient = knex(config.sqlite3)
+const sqliteClient = knex(config.sqlite3)
 
-//     try {
-//         //Implementar creación de tabla
-//         await sqliteClient.schema.dropTableIfExists('mensajes');
-//         await sqliteClient.schema.createTable('mensajes', table => {
-//             table.increments('id').primary();
-//             table.string('autor').notNullable();
-//             table.string('hora');
-//             table.string('texto');
-//         });
+    try {
+        //Implementar creación de tabla
+        await sqliteClient.schema.dropTableIfExists('mensajes');
+        await sqliteClient.schema.createTable('mensajes', table => {
+            table.increments('id').primary();
+            table.string('autor', 15).notNullable();
+            table.time('fyh');
+            table.string('texto', 50).notNullable();
+    
+        })
+         const mensaje = [
+             {autor: 'Base de Datos'  ,hora: "00:00",texto:'BIENVENIDOS!' },
+             {autor: 'Administracion', hora: "00:00", texto: 'AQUI PUEDES ESCRIBIR TUS MENSAJES'}
+         ];
 
-//         const mensaje = [
-//             {autor: 'Base de Datos'  ,hora: "00:00",texto:'BIENVENIDOS!' },
-//             {autor: 'Administracion', hora: "00:00", texto: 'AQUI PUEDES ESCRIBIR TUS MENSAJES'}
-//         ];
+         await sqliteClient('mensajes').insert(mensaje);
 
-//         await sqliteClient('mensajes').insert(mensaje);
-
-//     console.log('tabla mensajes en sqlite3 creada con éxito')
-// } catch (error) {
-//     console.log('error al crear tabla mensajes en sqlite3')
-// } finally {
-//     sqliteClient.destroy() 
-// }
+     console.log('tabla mensajes en sqlite3 creada con éxito')
+ } catch (error) {
+     console.log('error al crear tabla mensajes en sqlite3')
+ } finally {
+     sqliteClient.destroy() 
+ }
